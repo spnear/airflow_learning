@@ -2,4 +2,4 @@
 .env
 /__pycache__/
 /logs/
-*__pycache__/
+dags/__pycache__/*.pyc
