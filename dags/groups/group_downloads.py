@@ -1,13 +1,11 @@
 from airflow import DAG
 from airflow.operators.bash import BashOperator
+from airflow.utils.task_group import TaskGroup
 
 
-def subdag_downloads(parent_dag_id, child_dag_id, args):
+def download_tasks():
 
-    with DAG(f"{parent_dag_id}.{child_dag_id}",
-             start_date=args['start_date'],
-             schedule_interval=args['schedule_interval'],
-             catchup=args['catchup']) as dag:
+    with TaskGroup("downloads", tooltip="Download task") as group:
         
         download_a = BashOperator(
             task_id='download_a',
@@ -26,4 +24,4 @@ def subdag_downloads(parent_dag_id, child_dag_id, args):
             bash_command='sleep 10'
         )
         
-    return dag
+    return group
